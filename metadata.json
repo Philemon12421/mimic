@@ -1,0 +1,6 @@
+{
+  "name": "MINIC",
+  "description": "AI-powered idea generation SaaS platform for creators, businesses, and researchers.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["AI Content Generation", "SaaS Dashboard Architecture"]
+}
