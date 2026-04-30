@@ -17,7 +17,8 @@ import {
   ChevronLeft,
   ChevronRight,
   LogOut,
-  Download
+  Download,
+  Shield
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import Dashboard from './components/Dashboard';
@@ -101,12 +102,10 @@ export default function App() {
   };
 
   const HistoryView = () => (
-    <div className="p-16 max-w-5xl mx-auto space-y-16">
-      <div className="space-y-4">
-        <h2 className="text-5xl font-black tracking-tight">History</h2>
-        <p className="text-neutral-400 font-mono text-[10px] uppercase tracking-widest leading-loose">
-          TEMPORAL SIGNAL LOGS // ARCHIVE
-        </p>
+    <div className="p-8 md:p-16 max-w-5xl mx-auto space-y-12">
+      <div className="space-y-2">
+        <span className="text-[11px] font-bold text-[#6B7280] uppercase tracking-[0.2em]">Archive</span>
+        <h2 className="text-4xl font-bold tracking-tight text-[#111827]">Temporal Signal History</h2>
       </div>
       <div className="grid grid-cols-1 gap-4">
         {[
@@ -115,21 +114,23 @@ export default function App() {
           { title: 'SaaS Loyalty Loop Implementation', date: '2024-04-27', score: 94 },
           { title: 'Open Source Sustainability Model', date: '2024-04-26', score: 81 }
         ].map((item, i) => (
-          <div key={i} className="p-8 border border-neutral-100 flex items-center justify-between hover:border-black transition-all group group-hover:bg-neutral-50">
-            <div className="flex items-center gap-8">
-              <span className="text-[10px] font-mono text-neutral-300">00{i+1}</span>
+          <div key={i} className="saas-card flex items-center justify-between group cursor-pointer hover:border-[#111827] transition-all">
+            <div className="flex items-center gap-6">
+              <div className="w-10 h-10 rounded-xl bg-[#F9FAFB] flex items-center justify-center text-xs font-bold text-[#6B7280] group-hover:bg-[#111827] group-hover:text-white transition-all">
+                0{i+1}
+              </div>
               <div className="space-y-1">
-                <h4 className="font-bold text-lg group-hover:text-black">{item.title}</h4>
-                <p className="text-[10px] text-neutral-400 font-mono uppercase">{item.date}</p>
+                <h4 className="font-bold text-[#111827]">{item.title}</h4>
+                <p className="text-[10px] text-[#6B7280] font-bold uppercase tracking-wider">{item.date}</p>
               </div>
             </div>
-            <div className="flex items-center gap-12">
+            <div className="flex items-center gap-10">
               <div className="text-right">
-                <p className="text-[10px] font-black text-neutral-300 uppercase tracking-widest">Score</p>
-                <p className="text-2xl font-black">{item.score}</p>
+                <p className="text-[10px] font-bold text-[#6B7280] uppercase tracking-widest">Score</p>
+                <p className="text-2xl font-bold text-[#111827]">{item.score}</p>
               </div>
-              <button className="p-4 border border-neutral-100 rounded-xl hover:bg-black hover:text-white transition-all">
-                <Download size={16} />
+              <button className="p-3 bg-neutral-50 rounded-xl hover:bg-[#111827] hover:text-white transition-all text-[#6B7280]">
+                <Download size={18} />
               </button>
             </div>
           </div>
@@ -143,46 +144,50 @@ export default function App() {
       {/* Sidebar */}
       <motion.aside 
         initial={false}
-        animate={{ width: isSidebarCollapsed ? 80 : 260 }}
-        className="flex flex-col h-full bg-white border-r border-neutral-100 z-50 shrink-0"
+        animate={{ width: isSidebarCollapsed ? 80 : 280 }}
+        className="flex flex-col h-full bg-white border-r border-[#F3F4F6] z-50 shrink-0"
       >
         <div className="p-8 pb-4">
           <Logo size={isSidebarCollapsed ? 32 : 40} showText={!isSidebarCollapsed} />
         </div>
 
-        <nav className="flex-1 px-4 space-y-1 mt-8">
+        <nav className="flex-1 px-4 space-y-1 mt-8 overflow-y-auto">
+          <div className="px-3 pb-2 text-[10px] font-bold text-[#9CA3AF] uppercase tracking-[0.2em]">Main Navigation</div>
           {menuItems.map((item) => (
             <button
               id={`nav-${item.label.toLowerCase().replace(' ', '-')}`}
               key={item.label}
               onClick={() => handleMenuClick(item)}
-              className={`w-full flex items-center gap-4 px-3 py-2.5 rounded-lg transition-all duration-200 group ${
-                activeTab === item.label ? 'bg-black text-white' : 'text-neutral-400 hover:text-black hover:bg-black/5'
+              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-[10px] transition-all duration-200 group relative ${
+                activeTab === item.label ? 'bg-[#F9FAFB] text-[#111827]' : 'text-[#6B7280] hover:text-[#111827] hover:bg-[#F9FAFB]/50'
               }`}
             >
-              <span className="shrink-0">{item.icon}</span>
-              {!isSidebarCollapsed && <span className="font-medium">{item.label}</span>}
-              {!isSidebarCollapsed && activeTab === item.label && (
-                <motion.div layoutId="active-nav" className="ml-auto w-1 h-1 rounded-full bg-white" />
+              {activeTab === item.label && (
+                <motion.div 
+                  layoutId="active-pill" 
+                  className="absolute left-0 w-1 h-5 bg-[#111827] rounded-r-full" 
+                />
               )}
+              <span className={`shrink-0 ${activeTab === item.label ? 'text-[#111827]' : 'text-[#9CA3AF] group-hover:text-[#111827]'}`}>{item.icon}</span>
+              {!isSidebarCollapsed && <span className={`font-semibold tracking-tight ${activeTab === item.label ? 'text-[#111827]' : ''}`}>{item.label}</span>}
             </button>
           ))}
         </nav>
 
-        <div className="p-4 border-t border-neutral-100 space-y-1">
+        <div className="p-4 border-t border-[#F3F4F6] space-y-1">
           <button 
             onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
-            className="w-full flex items-center gap-4 px-3 py-2 text-neutral-400 hover:text-black transition-colors"
+            className="w-full flex items-center gap-3 px-3 py-2 text-[#6B7280] hover:text-[#111827] transition-colors rounded-lg hover:bg-neutral-50"
           >
             {isSidebarCollapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
-            {!isSidebarCollapsed && <span className="font-medium">Collapse</span>}
+            {!isSidebarCollapsed && <span className="font-semibold">Collapse</span>}
           </button>
           <button 
             onClick={() => setIsAuthenticated(false)}
-            className="w-full flex items-center gap-4 px-3 py-2 text-neutral-400 hover:text-red-600 transition-colors"
+            className="w-full flex items-center gap-3 px-3 py-2 text-[#6B7280] hover:text-red-600 transition-colors rounded-lg hover:bg-red-50/50"
           >
             <LogOut size={18} />
-            {!isSidebarCollapsed && <span className="font-medium">Logout</span>}
+            {!isSidebarCollapsed && <span className="font-semibold">Logout</span>}
           </button>
         </div>
       </motion.aside>
@@ -192,10 +197,10 @@ export default function App() {
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab + (selectedFlow || '') + (generatedIdea?.title || '')}
-            initial={{ opacity: 0, scale: 0.99 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 1.01 }}
-            transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
             className="h-full"
           >
             {renderContent()}
@@ -207,23 +212,24 @@ export default function App() {
 }
 
 const SettingsView = () => (
-  <div className="p-16 max-w-4xl mx-auto space-y-24">
-    <div className="flex items-center justify-between">
+  <div className="p-8 md:p-16 max-w-5xl mx-auto space-y-16">
+    <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 pb-12 border-b border-neutral-100">
       <div className="space-y-4">
-        <h2 className="text-6xl font-black tracking-tight">Settings</h2>
-        <p className="text-neutral-400 font-mono text-[10px] uppercase tracking-widest leading-loose">
-          ENGINE PREFERENCES & SECURITY CORE // S_02
-        </p>
+        <div className="flex items-center gap-2 text-[#6B7280] text-[11px] font-bold tracking-[0.2em] uppercase">
+          <Settings size={14} className="text-[#111827]" />
+          Platform Configuration
+        </div>
+        <h2 className="text-4xl font-bold tracking-tight text-[#111827]">Settings</h2>
       </div>
-      <div className="px-6 py-3 bg-neutral-900 text-white rounded-full text-[10px] font-black uppercase tracking-widest">
-        Hardware Acceleration Active
+      <div className="px-4 py-2 bg-[#F9FAFB] border border-neutral-100 rounded-full text-[10px] font-bold text-[#111827] uppercase tracking-widest">
+        Hardware Acceleration: ON
       </div>
     </div>
 
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
-      <section className="space-y-12">
-        <div className="flex items-center gap-4 border-b border-neutral-100 pb-4">
-          <h3 className="text-xs font-black uppercase tracking-[0.3em] text-black">Performance Nodes</h3>
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+      <section className="space-y-8">
+        <div className="pb-4 border-b border-neutral-50">
+          <h3 className="text-sm font-bold text-[#111827] uppercase tracking-widest">Performance Nodes</h3>
         </div>
         <div className="space-y-4">
           {[
@@ -231,38 +237,38 @@ const SettingsView = () => (
             { label: 'Recursive Search', desc: 'Enable multi-pass cluster analysis for obscure niches.' },
             { label: 'Real-time Scrubbing', desc: 'Auto-refresh trend vectors every 60 seconds.' }
           ].map(op => (
-            <div key={op.label} className="p-8 border border-neutral-100 flex flex-col gap-4 hover:border-black transition-all group">
+            <div key={op.label} className="saas-card bg-white flex flex-col gap-4 group cursor-pointer">
               <div className="flex justify-between items-center">
-                <span className="font-bold text-lg">{op.label}</span>
-                <div className="w-10 h-6 bg-neutral-100 rounded-full p-1 group-hover:bg-black transition-colors flex items-center justify-end">
-                  <div className="w-4 h-4 bg-white rounded-full" />
+                <span className="font-bold text-[#111827]">{op.label}</span>
+                <div className="w-10 h-6 bg-neutral-100 rounded-full p-1 group-hover:bg-[#111827]/10 transition-colors flex items-center justify-end">
+                  <div className="w-4 h-4 bg-white shadow-sm border border-neutral-200 rounded-full" />
                 </div>
               </div>
-              <p className="text-sm text-neutral-400 leading-relaxed">{op.desc}</p>
+              <p className="text-xs text-[#6B7280] leading-relaxed">{op.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
-      <section className="space-y-12">
-        <div className="flex items-center gap-4 border-b border-neutral-100 pb-4">
-          <h3 className="text-xs font-black uppercase tracking-[0.3em] text-black">Privacy Protocol</h3>
+      <section className="space-y-8">
+        <div className="pb-4 border-b border-neutral-50">
+          <h3 className="text-sm font-bold text-[#111827] uppercase tracking-widest">Security & Protocol</h3>
         </div>
-        <div className="space-y-4">
-           <div className="p-8 bg-neutral-50 rounded-[2rem] space-y-6">
-             <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-sm">
-               <Shield className="text-black" size={24} />
+        <div className="space-y-6">
+           <div className="p-8 bg-[#111827] text-white rounded-3xl space-y-6 shadow-xl shadow-[#111827]/10">
+             <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center border border-white/20">
+               <Shield className="text-white" size={24} />
              </div>
              <div className="space-y-2">
-               <h4 className="font-bold">Air-Gapped Processing</h4>
-               <p className="text-sm text-neutral-500 leading-relaxed">
-                 All synthesis occurs locally. No external LLM weightings are used in the final output generation.
+               <h4 className="font-bold text-lg">Local Logic Processing</h4>
+               <p className="text-xs text-neutral-400 leading-relaxed">
+                 All brainstorming and synthesis processes occur locally within your secured session. No data is stored on remote servers.
                </p>
              </div>
            </div>
            
-           <button className="w-full py-6 border border-neutral-100 rounded-[2rem] text-[10px] font-black uppercase tracking-widest hover:border-black hover:bg-black hover:text-white transition-all">
-             Purge Engine Memory
+           <button className="secondary-button w-full py-4 text-red-600 hover:bg-red-50 hover:border-red-100">
+             Clear Platform Cache
            </button>
         </div>
       </section>

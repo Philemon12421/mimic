@@ -6,7 +6,12 @@ import {
   Activity,
   Search,
   Tag,
-  Circle
+  Circle,
+  BarChart3,
+  CheckCircle2,
+  ExternalLink,
+  Layers,
+  Sparkles
 } from 'lucide-react';
 import { IdeaOutput } from '../types';
 
@@ -17,113 +22,159 @@ interface IdeaResultProps {
 
 export default function IdeaResult({ idea, onBack }: IdeaResultProps) {
   return (
-    <div className="min-h-full bg-white p-8 lg:p-16 pb-32">
-      <div className="max-w-4xl mx-auto space-y-24">
-        {/* Navigation */}
-        <div className="flex items-center justify-between py-4 border-b border-neutral-100">
-          <button 
-            onClick={onBack}
-            className="flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.3em] text-neutral-400 hover:text-black transition-all"
-          >
-            <ArrowLeft size={16} />
-            Reset Engine
+    <div className="min-h-full bg-[#F9FAFB] pb-32">
+      {/* Top Navbar */}
+      <div className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-neutral-100 flex items-center justify-between px-6 py-4">
+        <button 
+          onClick={onBack}
+          className="flex items-center gap-2 text-sm font-semibold text-[#6B7280] hover:text-[#111827] transition-all group"
+        >
+          <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
+          Dashboard
+        </button>
+        <div className="flex items-center gap-4">
+          <button className="secondary-button !px-4 hover:bg-neutral-50">
+            <Share2 size={16} />
           </button>
-          <div className="flex items-center gap-6">
-            <button className="text-neutral-400 hover:text-black transition-colors">
-              <Share2 size={18} />
-            </button>
-            <button className="flex items-center gap-3 px-6 py-2 bg-black text-white text-[10px] font-black uppercase tracking-widest rounded-full hover:bg-neutral-800 transition-all">
-              <Download size={14} />
-              Export
-            </button>
-          </div>
+          <button className="primary-button !px-4">
+            <Download size={16} />
+            Export Brief
+          </button>
         </div>
+      </div>
 
-        {/* Hero */}
-        <div className="space-y-10">
-          <div className="flex items-center justify-between gap-8">
-            <div className="space-y-6 flex-1">
-              <div className="flex items-center gap-3 text-neutral-400">
-                <Activity size={14} />
-                <span className="text-[10px] font-black uppercase tracking-[0.3em]">Structured Output #001</span>
+      <div className="max-w-5xl mx-auto px-6 py-12 lg:py-20 space-y-12">
+        {/* Hero Section */}
+        <div className="saas-card bg-white !p-0 overflow-hidden">
+          <div className="p-8 lg:p-12 space-y-10">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-8">
+              <div className="space-y-4 flex-1">
+                <div className="flex items-center gap-2 text-[#6B7280] text-[11px] font-bold tracking-[0.2em] uppercase">
+                  <Activity size={14} className="text-[#111827]" />
+                  Verified Intelligence Output
+                </div>
+                <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-[#111827] leading-tight">
+                  {idea.title}
+                </h1>
               </div>
-              <h1 className="text-6xl md:text-7xl font-sans font-black tracking-tight leading-[0.9] text-neutral-900">
-                {idea.title}
-              </h1>
+              
+              <div className="shrink-0 flex items-center gap-6 p-6 bg-[#F9FAFB] rounded-2xl border border-neutral-100">
+                <div className="text-center">
+                  <p className="text-[10px] font-bold text-[#6B7280] uppercase tracking-widest mb-1">Impact Score</p>
+                  <p className="text-4xl font-bold text-[#111827]">{idea.score_rating}</p>
+                </div>
+                <div className="w-12 h-12 rounded-full border-2 border-[#111827] border-t-neutral-100 animate-spin-slow duration-[3s]" />
+              </div>
             </div>
-            <div className="shrink-0 flex flex-col items-center justify-center w-32 h-32 border-4 border-black rounded-full text-center">
-              <span className="text-xs font-black uppercase tracking-tighter text-neutral-400">Viral Score</span>
-              <span className="text-4xl font-black text-black">{idea.score_rating}</span>
+            
+            <div className="flex flex-wrap gap-3">
+              {idea.tags.map(tag => (
+                <span key={tag} className="px-3 py-1 bg-white border border-neutral-100 rounded-full text-[10px] font-bold text-[#6B7280] uppercase tracking-tighter">
+                  #{tag.replace(/\s+/g, '')}
+                </span>
+              ))}
             </div>
           </div>
           
-          <div className="p-12 bg-neutral-50 rounded-[2rem] border border-neutral-100">
-            <p className="text-3xl text-neutral-900 font-medium leading-tight tracking-tight">
-              {idea.idea}
-            </p>
+          <div className="px-8 lg:px-12 py-10 bg-[#111827] text-white">
+            <div className="flex items-start gap-6">
+              <div className="shrink-0 w-10 h-10 bg-white rounded-xl flex items-center justify-center text-[#111827]">
+                <Layers size={20} />
+              </div>
+              <p className="text-xl md:text-2xl font-medium leading-relaxed">
+                {idea.idea}
+              </p>
+            </div>
           </div>
         </div>
 
-        {/* content sections */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-24">
-          {/* Left: Execution */}
-          <section className="space-y-12">
-            <div className="flex items-center gap-4 border-b border-neutral-100 pb-4">
-              <Circle size={10} fill="currentColor" className="text-black" />
-              <h3 className="text-xs font-black uppercase tracking-[0.3em] text-black">Execution Pipeline</h3>
-            </div>
-            <div className="space-y-8">
-              {idea.steps.map((step, i) => (
-                <div key={i} className="flex gap-6 group">
-                  <span className="text-xs font-mono text-neutral-300 mt-1">0{i + 1}</span>
-                  <p className="text-lg text-neutral-600 leading-relaxed group-hover:text-black transition-colors">{step}</p>
+        {/* Detailed Insights */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          {/* Main Execution Column */}
+          <div className="lg:col-span-7 space-y-12">
+            <section className="space-y-8">
+              <div className="flex items-center justify-between pb-6 border-b border-neutral-100">
+                <div className="flex items-center gap-3">
+                  <BarChart3 size={20} className="text-[#111827]" />
+                  <h3 className="text-lg font-bold text-[#111827]">Strategic Roadmap</h3>
                 </div>
-              ))}
-            </div>
-          </section>
+                <span className="text-[10px] font-bold text-[#6B7280] uppercase tracking-widest">Execution Steps</span>
+              </div>
+              
+              <div className="space-y-10">
+                {idea.steps.map((step, i) => (
+                  <motion.div 
+                    key={i}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.1 }}
+                    className="flex gap-6 items-start group"
+                  >
+                    <div className="shrink-0 w-8 h-8 rounded-lg bg-white border border-neutral-100 shadow-sm flex items-center justify-center text-xs font-bold text-[#111827] group-hover:bg-[#111827] group-hover:text-white transition-all">
+                      {i + 1}
+                    </div>
+                    <p className="text-base text-[#4B5563] leading-relaxed pt-1">
+                      {step}
+                    </p>
+                  </motion.div>
+                ))}
+              </div>
+            </section>
+          </div>
 
-          {/* Right: Metadata */}
-          <section className="space-y-12">
-            <div className="space-y-12">
+          {/* Side Panel: Metadata & Optimization */}
+          <div className="lg:col-span-5 space-y-8">
+            <section className="saas-card space-y-8">
               <div className="space-y-6">
-                <div className="flex items-center gap-4 border-b border-neutral-100 pb-4">
-                  <Search size={14} />
-                  <h3 className="text-xs font-black uppercase tracking-[0.3em] text-black">SEO Clusters</h3>
+                <div className="flex items-center gap-3 text-[#111827]">
+                  <Search size={18} />
+                  <h4 className="font-bold">Neural SEO Clusters</h4>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {idea.seo_keywords.map(kw => (
-                    <span key={kw} className="px-4 py-2 bg-neutral-50 text-[10px] font-black uppercase tracking-widest text-neutral-500 rounded-lg">
+                    <span key={kw} className="px-3 py-1.5 bg-[#F9FAFB] text-[11px] font-semibold text-[#4B5563] rounded-lg border border-neutral-100 hover:border-neutral-300 transition-colors cursor-default">
                       {kw}
                     </span>
                   ))}
                 </div>
               </div>
 
-              <div className="space-y-6">
-                <div className="flex items-center gap-4 border-b border-neutral-100 pb-4">
-                  <Tag size={14} />
-                  <h3 className="text-xs font-black uppercase tracking-[0.3em] text-black">Tags</h3>
-                </div>
-                <div className="flex flex-wrap gap-x-6 gap-y-4">
-                  {idea.tags.map(tag => (
-                    <span key={tag} className="text-xs font-mono text-neutral-400 lowercase">
-                      #{tag.replace(/\s+/g, '')}
-                    </span>
-                  ))}
+              <div className="pt-8 border-t border-neutral-50">
+                <div className="flex items-start gap-4 p-4 bg-blue-50/30 rounded-2xl border border-blue-100/50">
+                  <div className="shrink-0 w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-600">
+                    <CheckCircle2 size={20} />
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-sm font-bold text-[#111827]">Optimized Concept</p>
+                    <p className="text-xs text-[#6B7280] leading-relaxed">
+                      This strategy has been cross-referenced with current market volatility and competitor density.
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div className="p-8 border border-black/5 bg-neutral-50 rounded-[2rem] flex flex-col items-center text-center space-y-4">
-              <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-sm">
-                <Activity size={24} className="text-black" />
-              </div>
-              <div>
-                <h4 className="font-black text-lg text-neutral-900 uppercase tracking-tighter">Processed</h4>
-                <p className="text-[10px] text-neutral-400 font-mono uppercase mt-1">INTERNAL ENGINE VALIDATED</p>
-              </div>
+              <button className="secondary-button w-full">
+                <ExternalLink size={14} />
+                View Detailed Research
+              </button>
+            </section>
+
+            <div className="saas-card bg-[#111827] text-white border-none flex flex-col items-center text-center p-8 space-y-4">
+               <div className="relative">
+                  <div className="absolute inset-0 bg-white/20 blur-xl rounded-full" />
+                  <div className="relative w-12 h-12 bg-white/10 rounded-full flex items-center justify-center border border-white/20">
+                    <Sparkles size={20} />
+                  </div>
+               </div>
+               <div className="space-y-1">
+                  <h4 className="font-bold text-sm">Adaptive Engine</h4>
+                  <p className="text-[10px] text-neutral-400 uppercase tracking-widest font-bold">Feedback Loop Verified</p>
+               </div>
+               <p className="text-xs text-neutral-400 leading-relaxed max-w-[200px]">
+                 Click here to refine the output parameters and re-generate.
+               </p>
             </div>
-          </section>
+          </div>
         </div>
       </div>
     </div>

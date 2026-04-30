@@ -9,7 +9,9 @@ import {
   Search,
   TrendingUp,
   Circle,
-  Hash
+  Activity,
+  Globe,
+  Settings
 } from 'lucide-react';
 import { UserType, USER_FLOWS } from '../types';
 
@@ -18,100 +20,117 @@ interface DashboardProps {
 }
 
 const CATEGORIES = [
-  { id: 'content_creators', icon: <Video size={20} />, label: 'Content' },
-  { id: 'bloggers', icon: <PenTool size={20} />, label: 'Writing' },
-  { id: 'students', icon: <GraduationCap size={20} />, label: 'Education' },
-  { id: 'businesses', icon: <Briefcase size={20} />, label: 'SaaS' },
-  { id: 'researchers', icon: <Search size={20} />, label: 'Deep Dive' },
-  { id: 'trend_hunters', icon: <TrendingUp size={20} />, label: 'Signals' },
+  { id: 'content_creators', icon: <Video className="w-5 h-5" />, label: 'Content' },
+  { id: 'bloggers', icon: <PenTool className="w-5 h-5" />, label: 'Writing' },
+  { id: 'students', icon: <GraduationCap className="w-5 h-5" />, label: 'Education' },
+  { id: 'businesses', icon: <Briefcase className="w-5 h-5" />, label: 'Strategy' },
+  { id: 'researchers', icon: <Search className="w-5 h-5" />, label: 'Insights' },
+  { id: 'trend_hunters', icon: <TrendingUp className="w-5 h-5" />, label: 'Market' },
 ] as const;
 
 export default function Dashboard({ onSelectFlow }: DashboardProps) {
   return (
-    <div className="p-8 lg:p-16 max-w-7xl mx-auto space-y-24 h-full flex flex-col">
-      {/* Hero Section */}
-      <div className="space-y-6">
-        <div className="flex items-center gap-4 text-neutral-400">
-          <Hash size={14} />
-          <span className="text-[10px] font-black uppercase tracking-[0.4em]">Intelligence Surface v1.0</span>
+    <div className="p-6 md:p-12 lg:p-16 max-w-7xl mx-auto space-y-16">
+      {/* Header Area */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 pb-12 border-b border-neutral-100">
+        <div className="space-y-4">
+          <div className="flex items-center gap-2 text-[#6B7280] text-[11px] font-bold tracking-[0.2em] uppercase">
+            <Activity size={14} className="text-[#111827]" />
+            Control Center v1.2
+          </div>
+          <motion.h1 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-5xl md:text-6xl font-bold tracking-tight text-[#111827]"
+          >
+            Design your next <span className="text-[#6B7280]">breakthrough.</span>
+          </motion.h1>
         </div>
-        <motion.h1 
-          initial={{ opacity: 0, y: 20 }} 
-          animate={{ opacity: 1, y: 0 }}
-          className="text-7xl md:text-8xl font-black tracking-tight text-neutral-900 leading-[0.85]"
-        >
-          GENERATE<br />
-          <span className="text-neutral-200">STRATEGY.</span>
-        </motion.h1>
+        
+        <div className="flex items-center gap-4">
+          <button className="secondary-button whitespace-nowrap">
+            <History size={16} />
+            History
+          </button>
+          <button className="primary-button whitespace-nowrap">
+            <Globe size={16} />
+            Global Feed
+          </button>
+        </div>
       </div>
 
-      {/* Grid Categories */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-2 flex-1">
+      {/* Main Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {CATEGORIES.map((cat, idx) => (
           <motion.button
-            id={`cat-card-${cat.id}`}
             key={cat.id}
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: idx * 0.03 }}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: idx * 0.05 }}
             onClick={() => onSelectFlow(cat.id as UserType)}
-            className="group relative p-8 aspect-square flex flex-col justify-between text-left border border-neutral-100 hover:border-black transition-all duration-300 bg-white"
+            className="saas-card text-left flex flex-col justify-between h-[240px] group"
           >
             <div className="flex items-start justify-between">
-              <div className="p-3 bg-neutral-50 rounded-lg group-hover:bg-black group-hover:text-white transition-all text-neutral-400">
+              <div className="p-3 bg-neutral-50 rounded-xl text-[#111827] group-hover:bg-[#111827] group-hover:text-white transition-all duration-300">
                 {cat.icon}
               </div>
-              <Circle className="text-neutral-100 group-hover:text-black transition-colors" size={8} fill="currentColor" />
+              <ArrowRight className="text-neutral-300 group-hover:text-[#111827] transition-all transform group-hover:translate-x-1" size={20} />
             </div>
 
-            <div className="space-y-2">
-              <h3 className="text-sm font-black uppercase tracking-widest text-neutral-900">{cat.label}</h3>
-              <div className="h-0.5 w-0 group-hover:w-full bg-black transition-all duration-300" />
+            <div className="space-y-3">
+              <h3 className="text-xl font-bold text-[#111827]">{cat.label}</h3>
+              <p className="text-sm text-[#6B7280] leading-relaxed line-clamp-2">
+                {USER_FLOWS[cat.id as UserType].description}
+              </p>
+              <div className="pt-2 flex items-center gap-2 text-[11px] font-bold text-[#111827] uppercase tracking-wider">
+                Begin Session
+              </div>
             </div>
           </motion.button>
         ))}
       </div>
 
-      {/* Activity Bar */}
-      <div className="pt-12 border-t border-neutral-100 flex items-center justify-between text-neutral-400">
-        <div className="flex items-center gap-8">
-          <div className="flex items-center gap-3">
-            <div className="w-1.5 h-1.5 rounded-full bg-black animate-pulse" />
-            <span className="text-[10px] font-black uppercase tracking-widest">Engine Ready</span>
+      {/* Analytics / Integration Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 pt-8">
+        <div className="lg:col-span-8 saas-card bg-[#F9FAFB] border-none flex flex-col md:flex-row items-center gap-10 p-10">
+          <div className="shrink-0 w-32 h-32 rounded-full border-4 border-white shadow-sm flex items-center justify-center bg-[#111827] text-white">
+            <TrendingUp size={48} />
           </div>
-          <div className="flex items-center gap-3">
-            <History size={14} />
-            <span className="text-[10px] font-black uppercase tracking-widest">342 Ideas Generated Today</span>
+          <div className="space-y-4 flex-1">
+            <h3 className="text-2xl font-bold text-[#111827]">Engine Optimization</h3>
+            <p className="text-sm text-[#6B7280] leading-relaxed max-w-xl">
+              Our proprietary synthesis engine is currently running with 98.4% accuracy across all data vectors. Your ideas are protected by end-to-end local hardware encryption.
+            </p>
+            <div className="flex flex-wrap gap-3 pt-2">
+              {['Neural Mapping', 'Sentiment Clusters', 'Vector Analysis'].map(tag => (
+                <span key={tag} className="px-3 py-1 bg-white rounded-full text-[10px] font-bold text-[#111827] border border-neutral-100 uppercase tracking-tighter">
+                  {tag}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
-        <button className="text-[10px] font-black uppercase tracking-widest hover:text-black transition-colors">Documentation</button>
-      </div>
 
-      {/* Guide Section */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 pt-12">
-        <div className="p-10 bg-neutral-50 rounded-[2rem] space-y-6">
-          <h4 className="text-sm font-black uppercase tracking-widest">Intelligence Guide</h4>
-          <p className="text-neutral-500 leading-relaxed">
-            MINIC uses pattern-based synthesis to cluster signals. For best results, provide multi-vector inputs during the guided flow.
-          </p>
-          <div className="flex gap-4">
-            <span className="px-3 py-1 bg-white border border-neutral-100 rounded-full text-[10px] font-bold">PROMPT_ENGINES</span>
-            <span className="px-3 py-1 bg-white border border-neutral-100 rounded-full text-[10px] font-bold">SIGNAL_CLUSTERS</span>
+        <div className="lg:col-span-4 saas-card flex flex-col justify-between">
+          <div className="space-y-2">
+            <h4 className="text-[11px] font-black text-[#6B7280] uppercase tracking-[0.2em]">Live Status</h4>
+            <div className="space-y-3 pt-4">
+               {[
+                 { label: 'Latency', val: '12ms' },
+                 { label: 'Throughput', val: '4.2t/s' },
+                 { label: 'Uptime', val: '99.9%' }
+               ].map(stat => (
+                 <div key={stat.label} className="flex justify-between items-center text-xs">
+                   <span className="text-[#6B7280]">{stat.label}</span>
+                   <span className="font-mono font-bold text-[#111827]">{stat.val}</span>
+                 </div>
+               ))}
+            </div>
           </div>
-        </div>
-        <div className="p-10 border border-neutral-100 rounded-[2rem] space-y-6 flex flex-col justify-center">
-          <div className="flex items-center gap-4">
-            <TrendingUp size={20} />
-            <span className="text-xs font-black uppercase tracking-widest">Live Engine Status</span>
-          </div>
-          <div className="space-y-3">
-            {['Keyword Vectorization', 'Cluster Analysis', 'Sentiment Scoring'].map(task => (
-              <div key={task} className="flex items-center justify-between text-[10px] font-mono text-neutral-400">
-                <span>{task}</span>
-                <span className="text-black">ACTIVE</span>
-              </div>
-            ))}
-          </div>
+          <button className="secondary-button w-full mt-6">
+            <Settings size={14} />
+            Runtime Settings
+          </button>
         </div>
       </div>
     </div>
