@@ -3,15 +3,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState, ReactNode } from 'react';
+import { useState } from 'react';
 import { 
   LayoutDashboard, 
-  Video, 
-  PenTool, 
-  GraduationCap, 
-  Briefcase, 
-  Search, 
-  TrendingUp, 
   Settings, 
   Users,
   ChevronLeft,
@@ -21,19 +15,17 @@ import {
   Shield
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import Dashboard from './components/Dashboard';
+import EngineWorkspace from './components/EngineWorkspace';
 import Huddles from './components/Huddles';
-import FlowWizard from './components/FlowWizard';
 import IdeaResult from './components/IdeaResult';
 import { Logo } from './components/Logo';
 import LandingPage from './components/LandingPage';
-import { UserType, IdeaOutput } from './types';
+import { IdeaOutput } from './types';
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [activeTab, setActiveTab] = useState('Dashboard');
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-  const [selectedFlow, setSelectedFlow] = useState<UserType | null>(null);
   const [generatedIdea, setGeneratedIdea] = useState<IdeaOutput | null>(null);
 
   if (!isAuthenticated) {
@@ -42,25 +34,13 @@ export default function App() {
 
   const menuItems = [
     { icon: <LayoutDashboard size={20} />, label: 'Dashboard' },
-    { icon: <Video size={20} />, label: 'Content Creators', type: 'content_creators' },
-    { icon: <PenTool size={20} />, label: 'Bloggers', type: 'bloggers' },
-    { icon: <GraduationCap size={20} />, label: 'Students', type: 'students' },
-    { icon: <Briefcase size={20} />, label: 'Businesses', type: 'businesses' },
-    { icon: <Search size={20} />, label: 'Researchers', type: 'researchers' },
-    { icon: <TrendingUp size={20} />, label: 'Trend Hunters', type: 'trend_hunters' },
     { icon: <Users size={20} />, label: 'Huddles' },
     { icon: <Settings size={20} />, label: 'Settings' },
   ];
 
   const handleMenuClick = (item: any) => {
-    if (item.type) {
-      setSelectedFlow(item.type as UserType);
-      setActiveTab('Generated');
-    } else {
-      setActiveTab(item.label);
-      setSelectedFlow(null);
-      setGeneratedIdea(null);
-    }
+    setActiveTab(item.label);
+    setGeneratedIdea(null);
   };
 
   const renderContent = () => {
@@ -68,76 +48,22 @@ export default function App() {
       return (
         <IdeaResult 
           idea={generatedIdea} 
-          onBack={() => {
-            setGeneratedIdea(null);
-            setSelectedFlow(null);
-            setActiveTab('Dashboard');
-          }} 
-        />
-      );
-    }
-
-    if (selectedFlow) {
-      return (
-        <FlowWizard 
-          type={selectedFlow} 
-          onComplete={(idea) => setGeneratedIdea(idea)}
-          onCancel={() => setSelectedFlow(null)} 
+          onBack={() => setGeneratedIdea(null)} 
         />
       );
     }
 
     switch (activeTab) {
       case 'Dashboard':
-        return <Dashboard onSelectFlow={(type) => setSelectedFlow(type)} />;
+        return <EngineWorkspace onGenerated={(idea) => setGeneratedIdea(idea)} />;
       case 'Huddles':
         return <Huddles />;
-      case 'History':
-        return <HistoryView />;
       case 'Settings':
         return <SettingsView />;
       default:
-        return <Dashboard onSelectFlow={(type) => setSelectedFlow(type)} />;
+        return <EngineWorkspace onGenerated={(idea) => setGeneratedIdea(idea)} />;
     }
   };
-
-  const HistoryView = () => (
-    <div className="p-8 md:p-16 max-w-5xl mx-auto space-y-12">
-      <div className="space-y-2">
-        <span className="text-[11px] font-bold text-[#6B7280] uppercase tracking-[0.2em]">Archive</span>
-        <h2 className="text-4xl font-bold tracking-tight text-[#111827]">Temporal Signal History</h2>
-      </div>
-      <div className="grid grid-cols-1 gap-4">
-        {[
-          { title: 'The Minimalist Dev Blog Strategy', date: '2024-04-28', score: 92 },
-          { title: 'TikTok Math Shorts Architecture', date: '2024-04-27', score: 88 },
-          { title: 'SaaS Loyalty Loop Implementation', date: '2024-04-27', score: 94 },
-          { title: 'Open Source Sustainability Model', date: '2024-04-26', score: 81 }
-        ].map((item, i) => (
-          <div key={i} className="saas-card flex items-center justify-between group cursor-pointer hover:border-[#111827] transition-all">
-            <div className="flex items-center gap-6">
-              <div className="w-10 h-10 rounded-xl bg-[#F9FAFB] flex items-center justify-center text-xs font-bold text-[#6B7280] group-hover:bg-[#111827] group-hover:text-white transition-all">
-                0{i+1}
-              </div>
-              <div className="space-y-1">
-                <h4 className="font-bold text-[#111827]">{item.title}</h4>
-                <p className="text-[10px] text-[#6B7280] font-bold uppercase tracking-wider">{item.date}</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-10">
-              <div className="text-right">
-                <p className="text-[10px] font-bold text-[#6B7280] uppercase tracking-widest">Score</p>
-                <p className="text-2xl font-bold text-[#111827]">{item.score}</p>
-              </div>
-              <button className="p-3 bg-neutral-50 rounded-xl hover:bg-[#111827] hover:text-white transition-all text-[#6B7280]">
-                <Download size={18} />
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
 
   return (
     <div className="flex h-screen overflow-hidden text-sm bg-white">
@@ -196,7 +122,7 @@ export default function App() {
       <main className="flex-1 overflow-y-auto relative bg-white">
         <AnimatePresence mode="wait">
           <motion.div
-            key={activeTab + (selectedFlow || '') + (generatedIdea?.title || '')}
+            key={activeTab + (generatedIdea?.title || '')}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

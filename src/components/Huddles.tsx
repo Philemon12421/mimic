@@ -28,7 +28,7 @@ export default function Huddles() {
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 pb-12 border-b border-neutral-100">
         <div className="space-y-4">
           <div className="flex items-center gap-2 text-[#6B7280] text-[11px] font-bold tracking-[0.2em] uppercase">
-            <Users size={14} className="text-[#111827]" />
+            <Users size={14} className="text-[#2563EB]" />
             Community Sync v1.0
           </div>
           <h1 className="text-5xl md:text-6xl font-bold tracking-tight text-[#111827]">
@@ -37,7 +37,7 @@ export default function Huddles() {
         </div>
         
         <div className="flex items-center gap-4">
-          <button className="primary-button">
+          <button className="primary-button !bg-[#2563EB]">
             <Plus size={16} />
             Connect New Node
           </button>
@@ -51,10 +51,10 @@ export default function Huddles() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: idx * 0.05 }}
-            className="saas-card flex flex-col justify-between h-[280px] group"
+            className="saas-card flex flex-col justify-between h-[280px] group hover:border-[#2563EB]/30"
           >
             <div className="flex items-start justify-between">
-              <div className="p-4 bg-neutral-50 rounded-xl text-[#111827] group-hover:bg-[#111827] group-hover:text-white transition-all duration-300">
+              <div className="p-4 bg-neutral-50 rounded-xl text-[#111827] group-hover:bg-[#2563EB] group-hover:text-white transition-all duration-300">
                 {platform.icon}
               </div>
               <div className="px-2 py-1 bg-green-50 text-green-600 text-[10px] font-bold rounded uppercase tracking-tighter border border-green-100">
@@ -68,7 +68,7 @@ export default function Huddles() {
                 <p className="text-sm text-[#6B7280]">{platform.handle}</p>
               </div>
 
-              <button className="secondary-button w-full">
+              <button className="secondary-button w-full group-hover:border-[#2563EB]/50 group-hover:text-[#2563EB]">
                 Configure Identity
                 <ExternalLink size={14} />
               </button>
