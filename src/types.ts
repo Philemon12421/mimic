@@ -7,80 +7,134 @@ export interface IdeaOutput {
   seo_keywords: string[];
   tags: string[];
   score_rating: number;
+  market_analysis?: string;
+  target_audience_brief?: string;
+}
+
+export interface QuestionDefinition {
+  id: string;
+  question: string;
+  placeholder: string;
+  suggestions: string[];
 }
 
 export interface QuestionFlow {
   id: string;
   title: string;
   description: string;
-  questions: string[];
+  questions: QuestionDefinition[];
 }
+
+export const PROFESSIONAL_QUESTIONS: QuestionDefinition[] = [
+  {
+    id: 'project_name',
+    question: 'Project or Brand Name',
+    placeholder: 'e.g. TechFlow, HealthyHabits',
+    suggestions: ['InnovateX', 'ZenMind', 'GlobalStream', 'EcoVibe']
+  },
+  {
+    id: 'core_mission',
+    question: 'Core Mission / Objective',
+    placeholder: 'What are you trying to achieve?',
+    suggestions: ['Simplify complex tech', 'Promote sustainable living', 'Educate on financial literacy']
+  },
+  {
+    id: 'target_audience',
+    question: 'Target Audience Profile',
+    placeholder: 'Describe your ideal user/viewer',
+    suggestions: ['Gen Z Techies', 'Eco-conscious homeowners', 'Aspiring entrepreneurs (20-35)']
+  },
+  {
+    id: 'primary_platform',
+    question: 'Primary Distribution Channel',
+    placeholder: 'Where will this live?',
+    suggestions: ['YouTube Shorts', 'LinkedIn Articles', 'TikTok', 'B2B Newsletter']
+  },
+  {
+    id: 'content_style',
+    question: 'Visual & Content Style',
+    placeholder: 'e.g. Brutalist, Academic, High-Energy',
+    suggestions: ['Minimalist Aesthetic', 'Bold & Vibrant', 'Data-driven & Professional']
+  },
+  {
+    id: 'competitive_advantage',
+    question: 'Unique Selling Point (USP)',
+    placeholder: 'What makes you different?',
+    suggestions: ['First-hand expert knowledge', 'Proprietary data insights', 'Proprietary AI integration']
+  },
+  {
+    id: 'main_challenges',
+    question: 'Current Challenges',
+    placeholder: 'What is holding you back?',
+    suggestions: ['Low engagement rates', 'Saturated market', 'Technical complexity']
+  },
+  {
+    id: 'output_format',
+    question: 'Desired Output Type',
+    placeholder: 'e.g. Viral Script, Business Strategy, Roadmap',
+    suggestions: ['Detailed Video Script', '5-Part Email Sequence', '12-Month Content Plan']
+  },
+  {
+    id: 'tone_of_voice',
+    question: 'Brand Tone of Voice',
+    placeholder: 'e.g. Witty, Serious, Empathetic',
+    suggestions: ['Authoritative but accessible', 'Playful & Relatable', 'Futuristic & Cold']
+  },
+  {
+    id: 'keywords',
+    question: 'Priority Keywords/Topics',
+    placeholder: 'Comma separated list',
+    suggestions: ['SAAS, Efficiency, Automation', 'Health, Yoga, Mindfulness', 'Web3, Security, NFT']
+  },
+  {
+    id: 'monetization',
+    question: 'Growth/Monetization Goal',
+    placeholder: 'How do you measure success?',
+    suggestions: ['Lead generation', 'Ad revenue growth', 'Brand authority building']
+  },
+  {
+    id: 'additional_context',
+    question: 'Additional Constraints/Notes',
+    placeholder: 'Any specific rules to follow?',
+    suggestions: ['Budget < $1000', 'Must include "Green" terminology', 'No AI mentions allowed']
+  }
+];
 
 export const USER_FLOWS: Record<UserType, QuestionFlow> = {
   content_creators: {
     id: 'content_creators',
-    title: 'Content Creators',
-    description: 'Grow your audience with high-impact video and social content.',
-    questions: [
-      'What platform are you targeting?',
-      'What niche are you in?',
-      'What growth goal do you want?',
-      'Who is your audience?',
-      'Do you want viral, educational, or storytelling content?'
-    ]
+    title: 'Professional Strategist',
+    description: 'The ultimate synthesis engine for high-output professionals.',
+    questions: PROFESSIONAL_QUESTIONS
   },
   bloggers: {
     id: 'bloggers',
-    title: 'Bloggers',
-    description: 'Create SEO-optimized articles and compelling stories.',
-    questions: [
-      'What topic do you want to write about?',
-      'Do you want SEO-focused or storytelling style?',
-      'What audience are you targeting?',
-      'Long-form or short-form article?'
-    ]
+    title: 'Professional Strategist',
+    description: 'The ultimate synthesis engine for high-output professionals.',
+    questions: PROFESSIONAL_QUESTIONS
   },
   students: {
     id: 'students',
-    title: 'Students',
-    description: 'Unlock academic excellence and project inspiration.',
-    questions: [
-      'What subject are you working on?',
-      'Do you want project ideas or study assistance?',
-      'Difficulty level required?',
-      'Deadline or urgency level?'
-    ]
+    title: 'Professional Strategist',
+    description: 'The ultimate synthesis engine for high-output professionals.',
+    questions: PROFESSIONAL_QUESTIONS
   },
   businesses: {
     id: 'businesses',
-    title: 'Businesses',
-    description: 'Strategy, marketing, and startup ideas for the modern market.',
-    questions: [
-      'What industry are you in?',
-      'Startup idea or marketing strategy?',
-      'Target market?',
-      'Budget level (low/medium/high)?'
-    ]
+    title: 'Professional Strategist',
+    description: 'The ultimate synthesis engine for high-output professionals.',
+    questions: PROFESSIONAL_QUESTIONS
   },
   researchers: {
     id: 'researchers',
-    title: 'Researchers',
-    description: 'Deep dives, practical summaries, and source navigation.',
-    questions: [
-      'What field are you researching?',
-      'Depth level required?',
-      'Academic or practical focus?',
-      'Do you need sources or summaries?'
-    ]
+    title: 'Professional Strategist',
+    description: 'The ultimate synthesis engine for high-output professionals.',
+    questions: PROFESSIONAL_QUESTIONS
   },
   trend_hunters: {
     id: 'trend_hunters',
-    title: 'Trend Hunters',
-    description: 'Stay ahead of the curve with daily and niche insights.',
-    questions: [
-      'Do you want global or niche trends?',
-      'Platform focus (TikTok, YouTube, etc.)?',
-      'Time sensitivity (daily/weekly/monthly)?'
-    ]
+    title: 'Professional Strategist',
+    description: 'The ultimate synthesis engine for high-output professionals.',
+    questions: PROFESSIONAL_QUESTIONS
   }
 };

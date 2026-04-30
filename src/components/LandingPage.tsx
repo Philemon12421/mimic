@@ -1,10 +1,42 @@
-import React from 'react';
-import { motion } from 'motion/react';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { ArrowRight, Check, Zap, Shield, Globe, Cpu, ChevronRight, MessageCircle, HelpCircle, Users, Briefcase } from 'lucide-react';
 import { Logo } from './Logo';
 
 interface LandingPageProps {
   onStart: () => void;
+}
+
+function Typewriter({ words }: { words: string[] }) {
+  const [index, setIndex] = useState(0);
+  const [subIndex, setSubIndex] = useState(0);
+  const [reverse, setReverse] = useState(false);
+
+  useEffect(() => {
+    if (subIndex === words[index].length + 1 && !reverse) {
+      setTimeout(() => setReverse(true), 2000);
+      return;
+    }
+
+    if (subIndex === 0 && reverse) {
+      setReverse(false);
+      setIndex((prev) => (prev + 1) % words.length);
+      return;
+    }
+
+    const timeout = setTimeout(() => {
+      setSubIndex((prev) => prev + (reverse ? -1 : 1));
+    }, reverse ? 75 : 150);
+
+    return () => clearTimeout(timeout);
+  }, [subIndex, index, reverse, words]);
+
+  return (
+    <span className="text-[#2563EB]">
+      {words[index].substring(0, subIndex)}
+      <span className="animate-pulse">|</span>
+    </span>
+  );
 }
 
 export default function LandingPage({ onStart }: LandingPageProps) {
@@ -71,7 +103,6 @@ export default function LandingPage({ onStart }: LandingPageProps) {
           <Zap size={12} className="text-[#111827]" />
           Advanced Idea Engine v1.2
         </motion.div>
-        
         <motion.h1 
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -79,9 +110,8 @@ export default function LandingPage({ onStart }: LandingPageProps) {
           className="text-6xl md:text-8xl font-bold tracking-tight leading-[1.1] text-[#111827]"
         >
           Strategy for <br />
-          <span className="text-neutral-400">creators.</span>
+          <Typewriter words={['creators.', 'builders.', 'founders.', 'thinkers.', 'innovators.']} />
         </motion.h1>
-        
         <motion.p 
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}

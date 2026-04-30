@@ -10,7 +10,11 @@ import {
   Lightbulb,
   ArrowRight,
   Zap,
-  Target
+  Target,
+  MessageSquare,
+  Briefcase,
+  Users,
+  Cpu
 } from 'lucide-react';
 import { UserType, USER_FLOWS, IdeaOutput } from '../types';
 import { generateIdea } from '../services/geminiService';
@@ -24,19 +28,39 @@ interface EngineWorkspaceProps {
 
 export default function EngineWorkspace({ onGenerated }: EngineWorkspaceProps) {
   const [selectedType, setSelectedType] = useState<UserType>('content_creators');
+  const [outputType, setOutputType] = useState('Software Architecture');
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [isGenerating, setIsGenerating] = useState(false);
+  const [activeCategory, setActiveCategory] = useState<'Identity' | 'Strategy' | 'Context'>('Identity');
+
+  const outputTypes = [
+    { id: 'Software Architecture', icon: <Cpu size={14} />, label: 'Software' },
+    { id: 'Content Strategy', icon: <MessageSquare size={14} />, label: 'Content' },
+    { id: 'Marketing Campaign', icon: <Target size={14} />, label: 'Marketing' },
+    { id: 'Business Model', icon: <Briefcase size={14} />, label: 'Business' },
+    { id: 'Community Blueprint', icon: <Users size={14} />, label: 'Community' }
+  ];
 
   const flow = USER_FLOWS[selectedType];
 
-  const handleInputChange = (question: string, value: string) => {
-    setAnswers(prev => ({ ...prev, [question]: value }));
+  const categories = {
+    Identity: flow.questions.slice(0, 4),
+    Strategy: flow.questions.slice(4, 8),
+    Context: flow.questions.slice(8, 12)
+  };
+
+  const handleInputChange = (id: string, value: string) => {
+    setAnswers(prev => ({ ...prev, [id]: value }));
+  };
+
+  const handleSuggestionClick = (id: string, suggestion: string) => {
+    setAnswers(prev => ({ ...prev, [id]: suggestion }));
   };
 
   const handleGenerate = async () => {
     setIsGenerating(true);
     try {
-      const prompt = flow.questions.map(q => `${q}: ${answers[q] || 'Not specified'}`).join('\n');
+      const prompt = `OUTPUT ARCHITECTURE: ${outputType}\n\n` + flow.questions.map(q => `${q.question}: ${answers[q.id] || 'Not specified'}`).join('\n');
       const result = await generateIdea(selectedType, prompt);
       onGenerated(result);
     } catch (error) {
@@ -47,174 +71,161 @@ export default function EngineWorkspace({ onGenerated }: EngineWorkspaceProps) {
     }
   };
 
-  const isFormValid = flow.questions.every(q => answers[q]?.trim().length > 3);
+  const isFormValid = flow.questions.every(q => answers[q.id]?.trim().length > 1);
 
   return (
-    <div className="min-h-full bg-[#F9FAFB] p-6 lg:p-12">
+    <div className="min-h-full bg-[#F9FAFB] p-4 lg:p-12">
       {isGenerating && <ProfessionalLoading />}
-      <div className="max-w-6xl mx-auto space-y-12">
+      <div className="max-w-6xl mx-auto space-y-10">
         {/* Header Section */}
-        <div className="text-center space-y-4 pt-8">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="inline-flex items-center gap-2 px-3 py-1 bg-white border border-[#E5E7EB] rounded-full text-[11px] font-bold uppercase tracking-widest text-[#6B7280]"
-          >
-            <Zap size={12} className="text-[#2563EB]" />
-            AI POWERED SYNTHESIS
-          </motion.div>
-          <h1 className="text-5xl lg:text-6xl font-bold tracking-tight text-[#111827]">
-            AI Idea Generator
-          </h1>
-          <p className="text-[#6B7280] max-w-2xl mx-auto font-medium leading-relaxed">
-            The best online tool to quickly generate ideas. Automatic and free. <br className="hidden md:block"/>
-            Brainstorm new ideas for your business in a few seconds.
-          </p>
+        <div className="flex flex-col md:flex-row justify-between items-center gap-6 pt-4">
+          <div className="space-y-2 text-center md:text-left">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="inline-flex items-center gap-2 px-3 py-1 bg-white border border-[#E5E7EB] rounded-full text-[11px] font-bold uppercase tracking-widest text-[#6B7280]"
+            >
+              <Zap size={12} className="text-[#2563EB]" />
+              PROFESSIONAL SYNTHESIS ENGINE
+            </motion.div>
+            <h1 className="text-4xl lg:text-5xl font-bold tracking-tight text-[#111827]">
+              Engine Workspace
+            </h1>
+          </div>
+          
+          <div className="flex bg-white border border-[#E5E7EB] rounded-[16px] p-1.5 shadow-sm">
+            {(['Identity', 'Strategy', 'Context'] as const).map(cat => (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                className={`px-6 py-2 rounded-[12px] text-xs font-bold transition-all ${activeCategory === cat ? 'bg-[#2563EB] text-white' : 'text-[#6B7280] hover:bg-neutral-50'}`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Main Interface Grid */}
-        <div className="saas-card-glow grid grid-cols-1 lg:grid-cols-2">
-          {/* Left: Input Form */}
-          <div className="p-8 lg:p-12 border-b lg:border-b-0 lg:border-r border-[#E5E7EB] space-y-10">
-            <div className="space-y-8">
-              {/* Type Selector */}
-              <div className="form-group">
-                <label className="saas-label">Idea Purpose</label>
-                <div className="relative group">
-                  <select 
-                    value={selectedType}
-                    onChange={(e) => setSelectedType(e.target.value as UserType)}
-                    className="saas-select pr-10"
-                  >
-                    {Object.entries(USER_FLOWS).map(([id, f]) => (
-                      <option key={id} value={id}>{f.title}</option>
-                    ))}
-                  </select>
-                  <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-[#9CA3AF] pointer-events-none group-hover:text-[#111827] transition-colors" size={18} />
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          {/* Left: Input Form (Complex Static Form) */}
+          <div className="lg:col-span-8 space-y-6">
+            <div className="saas-card-glow p-8 lg:p-12 space-y-10">
+              {/* Output Type Selector */}
+              <div className="space-y-4">
+                <label className="text-[11px] font-bold uppercase tracking-widest text-[#6B7280]">1. Select Your Target Architecture</label>
+                <div className="flex flex-wrap gap-3">
+                  {outputTypes.map(ot => (
+                    <button
+                      key={ot.id}
+                      onClick={() => setOutputType(ot.id)}
+                      className={`flex items-center gap-3 px-5 py-3 rounded-xl border transition-all ${
+                        outputType === ot.id 
+                          ? 'border-[#2563EB] bg-[#F0F7FF] text-[#2563EB] ring-4 ring-[#2563EB]/5' 
+                          : 'border-[#E5E7EB] hover:border-[#D1D5DB] text-[#4B5563]'
+                      }`}
+                    >
+                      <div className={`p-2 rounded-lg ${outputType === ot.id ? 'bg-[#2563EB] text-white' : 'bg-white border border-[#E5E7EB] text-[#6B7280]'}`}>
+                        {ot.icon}
+                      </div>
+                      <span className="text-sm font-bold">{ot.label}</span>
+                    </button>
+                  ))}
                 </div>
-                <p className="text-[11px] text-[#9CA3AF] leading-relaxed mt-2">
-                  {flow.description}
-                </p>
               </div>
 
-              {/* Dynamic Questions */}
-              {flow.questions.map((q, i) => (
-                <div key={i} className="form-group">
-                  <label className="saas-label">{q}</label>
-                  {i === 0 ? (
-                    <input 
-                      className="saas-input"
-                      placeholder="e.g. ACME Inc. or Modern Dev Blog"
-                      value={answers[q] || ''}
-                      onChange={(e) => handleInputChange(q, e.target.value)}
-                    />
-                  ) : (
+              <div className="h-px bg-[#E5E7EB] w-full" />
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
+                {categories[activeCategory].map((q) => (
+                  <div key={q.id} className="form-group">
+                    <label className="saas-label flex items-center justify-between">
+                      {q.question}
+                      <Info size={14} className="text-[#9CA3AF] cursor-help" />
+                    </label>
                     <textarea 
-                      className="saas-input min-h-[120px] resize-none"
-                      placeholder="e.g. We are building a platform for..."
-                      value={answers[q] || ''}
-                      onChange={(e) => handleInputChange(q, e.target.value)}
+                      className="saas-input min-h-[90px] resize-none"
+                      placeholder={q.placeholder}
+                      value={answers[q.id] || ''}
+                      onChange={(e) => handleInputChange(q.id, e.target.value)}
                     />
+                    <div className="flex flex-wrap gap-2 mt-3">
+                      {q.suggestions.map(s => (
+                        <button
+                          key={s}
+                          onClick={() => handleSuggestionClick(q.id, s)}
+                          className="px-2.5 py-1 bg-[#F3F4F6] hover:bg-[#E5E7EB] rounded-full text-[10px] font-bold text-[#4B5563] transition-colors border border-transparent hover:border-[#D1D5DB]"
+                        >
+                          + {s}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="pt-8 border-t border-[#E5E7EB] flex items-center justify-between gap-6">
+                <div className="text-xs text-[#6B7280] font-medium italic">
+                  * All fields are processed through our Neural Clustering Core.
+                </div>
+                <div className="flex gap-4">
+                  {activeCategory !== 'Context' ? (
+                    <button 
+                      onClick={() => setActiveCategory(activeCategory === 'Identity' ? 'Strategy' : 'Context')}
+                      className="secondary-button"
+                    >
+                      Next Section
+                      <ArrowRight size={18} />
+                    </button>
+                  ) : (
+                    <button 
+                      disabled={!isFormValid || isGenerating}
+                      onClick={handleGenerate}
+                      className="primary-button !px-8"
+                    >
+                      {isGenerating ? <Loader2 className="animate-spin" /> : <><Sparkles size={18}/> Synthesize Idea</>}
+                    </button>
                   )}
                 </div>
-              ))}
-            </div>
-
-            {/* Action Bar */}
-            <div className="pt-6 relative">
-               <button 
-                disabled={!isFormValid || isGenerating}
-                onClick={handleGenerate}
-                className="primary-button w-full py-4 text-base font-bold shadow-lg shadow-[#2563EB]/20 group"
-               >
-                {isGenerating ? (
-                  <Loader2 size={24} className="animate-spin text-white" />
-                ) : (
-                  <>
-                    <Sparkles size={20} />
-                    Generate Ideas
-                    <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-                  </>
-                )}
-               </button>
-               {!isFormValid && !isGenerating && (
-                 <p className="text-center text-[10px] text-[#EF4444] font-bold uppercase tracking-widest mt-4">
-                   All fields required for synthesis
-                 </p>
-               )}
+              </div>
             </div>
           </div>
 
-          {/* Right: Suggestions & Live Insights */}
-          <div className="bg-[#F9FAFB] p-8 lg:p-12 flex flex-col">
-            <AnimatePresence mode="wait">
-              {isGenerating ? (
-                <motion.div 
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="flex-1 flex flex-col items-center justify-center text-center space-y-8"
-                >
-                  <div className="relative">
-                    <div className="absolute inset-0 bg-[#2563EB]/10 blur-3xl rounded-full scale-150 animate-pulse" />
-                    <div className="relative bg-white p-6 rounded-[24px] shadow-xl border border-[#E5E7EB]">
-                      <Logo size={48} className="animate-pulse" />
+          {/* Right: Insight Panel */}
+          <div className="lg:col-span-4 space-y-8">
+            <div className="saas-card p-8 bg-[#111827] text-white border-none space-y-6">
+               <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center border border-white/20">
+                 <Brain size={24} />
+               </div>
+               <div className="space-y-2">
+                 <h3 className="text-xl font-bold">Optimization Log</h3>
+                 <p className="text-xs text-neutral-400 leading-relaxed">
+                   Current session is focused on <span className="text-[#2563EB] font-bold">{activeCategory}</span> analysis. Fill all 12 parameters for maximum synthesis accuracy.
+                 </p>
+               </div>
+               
+               <div className="space-y-4 pt-4">
+                  {[
+                    { label: 'Data Density', val: `${Math.round((Object.keys(answers).length / 12) * 100)}%` },
+                    { label: 'Signal Clarity', val: 'Analyzing...' }
+                  ].map(stat => (
+                    <div key={stat.label} className="flex justify-between items-center">
+                      <span className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest">{stat.label}</span>
+                      <span className="text-xs font-mono text-[#2563EB] font-bold">{stat.val}</span>
                     </div>
-                  </div>
-                  <div className="space-y-3">
-                    <h4 className="text-xl font-bold text-[#111827]">Sensing Neural Pathways</h4>
-                    <div className="flex flex-col gap-2">
-                       {['Harmonizing Clusters...', 'Calculating Viral Affinity...', 'Synthesizing Vectors...'].map((task, i) => (
-                         <motion.div 
-                           key={task}
-                           initial={{ opacity: 0, x: -10 }}
-                           animate={{ opacity: 1, x: 0 }}
-                           transition={{ delay: i * 0.4 }}
-                           className="text-[11px] font-bold text-[#6B7280] uppercase tracking-widest"
-                         >
-                           {task}
-                         </motion.div>
-                       ))}
-                    </div>
-                  </div>
-                </motion.div>
-              ) : (
-                <motion.div 
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="flex-1 flex flex-col"
-                >
-                  <div className="text-center space-y-6 pt-12">
-                    <div className="w-24 h-24 bg-white border border-[#E5E7EB] rounded-[32px] flex items-center justify-center mx-auto shadow-sm">
-                      <Brain size={48} className="text-[#2563EB]" />
-                    </div>
-                    <div className="space-y-2">
-                      <h3 className="text-xl font-bold text-[#111827]">Welcome to the Idea Engine</h3>
-                      <p className="text-sm text-[#6B7280] leading-relaxed">
-                        Fill in some information about your project and click generate to witness the synthesis.
-                      </p>
-                    </div>
-                  </div>
+                  ))}
+               </div>
+            </div>
 
-                  <div className="mt-auto pt-12 grid grid-cols-2 gap-4">
-                    <div className="p-4 bg-white border border-[#E5E7EB] rounded-2xl space-y-2">
-                      <div className="flex items-center gap-2 text-[#2563EB]">
-                        <History size={14} />
-                        <span className="text-[10px] font-bold uppercase tracking-wider">Reliability</span>
-                      </div>
-                      <p className="font-bold text-[#111827]">99.8%</p>
-                    </div>
-                    <div className="p-4 bg-white border border-[#E5E7EB] rounded-2xl space-y-2">
-                      <div className="flex items-center gap-2 text-[#2563EB]">
-                        <Target size={14} />
-                        <span className="text-[10px] font-bold uppercase tracking-wider">Accuracy</span>
-                      </div>
-                      <p className="font-bold text-[#111827]">High-Perf</p>
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
+            <div className="saas-card p-8 space-y-6">
+              <h4 className="font-bold text-[#111827] flex items-center gap-2">
+                <Lightbulb size={16} className="text-[#2563EB]" />
+                Pro Tip
+              </h4>
+              <p className="text-xs text-[#6B7280] leading-relaxed">
+                Use our built-in suggestions to quickly populate industry-standard parameters while maintaining your unique core mission.
+              </p>
+            </div>
           </div>
         </div>
 
