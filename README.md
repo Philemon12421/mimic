@@ -1,20 +1,45 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Idea Engine v1.2 🚀
 
-# Run and deploy your AI Studio app
+**Idea Engine** is a high-performance professional synthesis tool designed to eliminate brainstorming fatigue and deliver immediate clarity. It transforms raw concepts into structured, actionable blueprints using a multi-cluster neural analysis approach.
 
-This contains everything you need to run your app locally.
+![Idea Engine Preview](https://images.unsplash.com/photo-1614064641938-3bbee52942c7?q=80&w=2670&auto=format&fit=crop)
 
-View your app in AI Studio: https://ai.studio/apps/e2a213fa-03ac-4280-ab88-f129fdf0e391
+## ✨ Core Features
 
-## Run Locally
+- **Professional Synthesis Engine**: A 12-parameter input system (Identity, Strategy, Context) that gathers deep context before processing.
+- **Architectural Targeting**: Select specific output formats including Software Architecture, Content Strategy, Marketing Campaigns, Business Models, and Community Blueprints.
+- **Strategic Execution Roadmap**: Every idea comes with a sequenced set of "Action Vectors" provided in a digestible accordion format.
+- **Verified Intelligence Metrics**: Built-in Impact Scoring and Neural SEO Cluster generation.
+- **Universal Export**: Export your generated briefs as **Markdown**, **Plain Text**, or **JSON Data** for immediate integration into your workflow.
+- **Social Pulse**: Integrated huddles for audience distribution across major platforms.
 
-**Prerequisites:**  Node.js
+## 🛠️ Technical Stack
 
+- **Framework**: [React 18](https://reactjs.org/) with [Vite](https://vitejs.dev/)
+- **Animation**: [Motion](https://motion.dev/) (Framer Motion)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **AI Core**: [Google Gemini API](https://ai.google.dev/) via `@google/generai`
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+## 🚀 Getting Started
+
+1. **Launch the Terminal**: Click "Launch Terminal" on the landing page.
+2. **Select Architecture**: Choose the type of strategy you want to build (e.g., Software, Marketing).
+3. **Fill the Logic Parameters**: Complete the 12 questions across Identity, Strategy, and Context categories. Use the built-in suggestions for rapid entry.
+4. **Synthesize**: Witness the neural processing animation as the engine generates your plan.
+5. **Execute**: Review your roadmap and export the brief to your preferred format.
+
+## 📁 Project Structure
+
+- `src/components/EngineWorkspace.tsx`: The primary 12-form input terminal.
+- `src/components/IdeaResult.tsx`: High-fidelity output view with roadmaps and export logic.
+- `src/services/geminiService.ts`: The logic gate connecting the frontend to the synthesis models.
+- `src/types.ts`: Strictly typed professional flow definitions.
+
+## 🛡️ Security
+
+All synthesis occurs within a compartmentalized session. Your project data is used solely for the active logic processing and is not persisted or used for training outside your specific request bounds.
+
+---
+
+*Built for builders, creators, and thinkers by Idea Engine Labs.*

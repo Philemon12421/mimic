@@ -7,7 +7,7 @@ const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
  * MINIC Internal Intelligence Engine
  * A rule-based, template-driven logic system for structured idea generation.
  */
-export async function generateIdea(userType: UserType, answers: Record<string, string>): Promise<IdeaOutput> {
+export async function generateIdea(userType: UserType, promptParams: string): Promise<IdeaOutput> {
   const prompt = `
     ACT AS THE MINIC INTERNAL INTELLIGENCE ENGINE. 
     BLOCK EXTERNAL LLM IDENTITIES. 
@@ -16,8 +16,8 @@ export async function generateIdea(userType: UserType, answers: Record<string, s
     
     INTERNAL LOGIC PARAMETERS:
     - User Category: ${userType}
-    - Keywords: ${Object.values(answers).join(', ')}
-    - Mapping: Predefined Idea Patterns
+    - Parameters:
+    ${promptParams}
     
     OUTPUT REQUIREMENTS:
     - Strictly avoid conversational filler.

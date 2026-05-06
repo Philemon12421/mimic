@@ -49,6 +49,9 @@ export default function EngineWorkspace({ onGenerated }: EngineWorkspaceProps) {
     Context: flow.questions.slice(8, 12)
   };
 
+  const answeredCount = (Object.values(answers) as string[]).filter(v => v.trim().length > 0).length;
+  const progress = (answeredCount / 12) * 100;
+
   const handleInputChange = (id: string, value: string) => {
     setAnswers(prev => ({ ...prev, [id]: value }));
   };
@@ -78,31 +81,47 @@ export default function EngineWorkspace({ onGenerated }: EngineWorkspaceProps) {
       {isGenerating && <ProfessionalLoading />}
       <div className="max-w-6xl mx-auto space-y-10">
         {/* Header Section */}
-        <div className="flex flex-col md:flex-row justify-between items-center gap-6 pt-4">
-          <div className="space-y-2 text-center md:text-left">
+        <div className="flex flex-col md:flex-row justify-between items-end gap-10 pt-4">
+          <div className="space-y-4 flex-1">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="inline-flex items-center gap-2 px-3 py-1 bg-white border border-[#E5E7EB] rounded-full text-[11px] font-bold uppercase tracking-widest text-[#6B7280]"
+              className="inline-flex items-center gap-2 px-3 py-1 bg-[#111827] rounded-full text-[10px] font-black uppercase tracking-[0.2em] text-white"
             >
-              <Zap size={12} className="text-[#2563EB]" />
-              PROFESSIONAL SYNTHESIS ENGINE
+              <Zap size={10} />
+              Professional Synthesis Engine
             </motion.div>
-            <h1 className="text-4xl lg:text-5xl font-bold tracking-tight text-[#111827]">
-              Engine Workspace
+            <h1 className="text-5xl lg:text-7xl font-bold tracking-tight text-[#111827] leading-[0.9]">
+              Engine <br />
+              <span className="text-neutral-400">Workspace.</span>
             </h1>
           </div>
           
-          <div className="flex bg-white border border-[#E5E7EB] rounded-[16px] p-1.5 shadow-sm">
-            {(['Identity', 'Strategy', 'Context'] as const).map(cat => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={`px-6 py-2 rounded-[12px] text-xs font-bold transition-all ${activeCategory === cat ? 'bg-[#2563EB] text-white' : 'text-[#6B7280] hover:bg-neutral-50'}`}
-              >
-                {cat}
-              </button>
-            ))}
+          <div className="flex flex-col gap-4 items-end">
+             <div className="flex bg-white border border-[#E5E7EB] rounded-[20px] p-1.5 shadow-sm">
+              {(['Identity', 'Strategy', 'Context'] as const).map(cat => (
+                <button
+                  key={cat}
+                  onClick={() => setActiveCategory(cat)}
+                  className={`px-8 py-3 rounded-[16px] text-[11px] font-black uppercase tracking-widest transition-all ${activeCategory === cat ? 'bg-[#111827] text-white' : 'text-[#6B7280] hover:bg-neutral-50'}`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+            <div className="w-full max-w-[280px] space-y-2">
+              <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-[#9CA3AF]">
+                <span>Neural Progress</span>
+                <span className="text-[#111827]">{Math.round(progress)}%</span>
+              </div>
+              <div className="h-1.5 w-full bg-[#E5E7EB] rounded-full overflow-hidden">
+                <motion.div 
+                  initial={{ width: 0 }}
+                  animate={{ width: `${progress}%` }}
+                  className="h-full bg-[#111827]"
+                />
+              </div>
+            </div>
           </div>
         </div>
 

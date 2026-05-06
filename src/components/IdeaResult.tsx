@@ -29,7 +29,7 @@ interface IdeaResultProps {
   onBack: () => void;
 }
 
-function StepAccordion({ step, index }: { step: string, index: number }) {
+function StepAccordion({ step, index }: { step: string; index: number; key?: React.Key }) {
   const [isOpen, setIsOpen] = useState(index === 0);
 
   return (
@@ -238,12 +238,20 @@ export default function IdeaResult({ idea, onBack }: IdeaResultProps) {
                 </h1>
               </div>
               
-              <div className="shrink-0 flex items-center gap-6 p-6 bg-[#F9FAFB] rounded-[24px] border border-neutral-100 shadow-inner">
-                <div className="text-center">
-                  <p className="text-[10px] font-bold text-[#6B7280] uppercase tracking-widest mb-1">Impact Score</p>
-                  <p className="text-4xl font-extrabold text-[#2563EB]">{idea.score_rating}</p>
+              <div className="shrink-0 flex items-center gap-6 p-8 bg-[#F9FAFB] rounded-[32px] border border-[#E5E7EB] shadow-inner relative group">
+                <div className="text-center relative z-10">
+                  <p className="text-[10px] font-black text-[#6B7280] uppercase tracking-[0.2em] mb-2">Impact Score</p>
+                  <p className="text-5xl font-black text-[#111827]">{idea.score_rating}</p>
                 </div>
-                <div className="w-12 h-12 rounded-full border-4 border-[#2563EB] border-t-transparent animate-spin duration-[2s]" />
+                <div className="relative w-16 h-16">
+                  <div className="absolute inset-0 rounded-full border-4 border-[#E5E7EB]" />
+                  <motion.div 
+                    initial={{ rotate: 0 }}
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                    className="absolute inset-0 rounded-full border-4 border-t-[#111827] border-r-transparent border-b-transparent border-l-transparent" 
+                  />
+                </div>
               </div>
             </div>
             
@@ -256,15 +264,15 @@ export default function IdeaResult({ idea, onBack }: IdeaResultProps) {
             </div>
           </div>
           
-          <div className="px-8 lg:px-12 py-12 bg-[#111827] text-white relative overflow-hidden group">
-            <div className="absolute inset-0 opacity-5 pointer-events-none group-hover:scale-110 transition-transform duration-1000">
-              <div className="absolute top-0 right-0 p-12"><Layers size={220} /></div>
+          <div className="px-8 lg:px-12 py-16 bg-[#111827] text-white relative overflow-hidden group">
+            <div className="absolute inset-0 opacity-10 pointer-events-none group-hover:scale-105 transition-transform duration-1000">
+              <div className="absolute top-0 right-0 p-12"><Layers size={300} /></div>
             </div>
-            <div className="flex items-start gap-8 relative z-10">
-              <div className="shrink-0 w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center text-white border border-white/20 backdrop-blur-md">
-                <Layers size={28} />
+            <div className="flex items-start gap-12 relative z-10">
+              <div className="shrink-0 w-20 h-20 bg-white/5 rounded-[24px] flex items-center justify-center text-white border border-white/10 backdrop-blur-xl">
+                <Layers size={40} />
               </div>
-              <p className="text-xl md:text-3xl font-medium leading-[1.4] text-neutral-100">
+              <p className="text-2xl md:text-4xl font-semibold leading-[1.3] text-white tracking-tight">
                 {idea.idea}
               </p>
             </div>
@@ -327,20 +335,20 @@ export default function IdeaResult({ idea, onBack }: IdeaResultProps) {
               </div>
             </section>
 
-            <div className="saas-card bg-[#2563EB] text-white border-none flex flex-col items-center text-center p-10 space-y-8 shadow-2xl shadow-[#2563EB]/20">
+            <div className="saas-card bg-neutral-50 border border-[#E5E7EB] flex flex-col items-center text-center p-12 space-y-8">
                <div className="relative">
-                  <div className="absolute inset-0 bg-white/20 blur-2xl rounded-full" />
-                  <div className="relative w-16 h-16 bg-white/10 rounded-[24px] flex items-center justify-center border border-white/20 backdrop-blur-sm">
+                  <div className="absolute inset-0 bg-[#111827]/5 blur-3xl rounded-full" />
+                  <div className="relative w-16 h-16 bg-white rounded-[24px] flex items-center justify-center border border-[#E5E7EB] text-[#111827]">
                     <Sparkles size={32} />
                   </div>
                </div>
                <div className="space-y-3">
-                  <h4 className="font-bold text-2xl">Adaptive Refinement</h4>
-                  <p className="text-[10px] text-blue-100 opacity-60 uppercase tracking-[0.3em] font-bold">Engine Revision Required?</p>
+                  <h4 className="font-black text-2xl tracking-tight text-[#111827]">Adaptive Refinement</h4>
+                  <p className="text-[10px] text-[#6B7280] uppercase tracking-[0.3em] font-black">Synthesis Correction Required?</p>
                </div>
                <button 
                 onClick={onBack}
-                className="w-full py-4 bg-white text-[#2563EB] font-bold rounded-2xl hover:bg-neutral-50 transition-all shadow-lg text-sm"
+                className="w-full py-5 bg-[#111827] text-white font-bold rounded-[16px] hover:bg-black transition-all shadow-xl shadow-black/10 text-sm"
                >
                  Restart Synthesis
                </button>
