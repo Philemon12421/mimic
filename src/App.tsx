@@ -159,11 +159,11 @@ const SettingsView = () => (
         </div>
         <div className="space-y-4">
           {[
-            { label: 'Neural Latency', desc: 'Prioritize depth over speed in signal synthesis.' },
-            { label: 'Recursive Search', desc: 'Enable multi-pass cluster analysis for obscure niches.' },
-            { label: 'Real-time Scrubbing', desc: 'Auto-refresh trend vectors every 60 seconds.' }
+            { label: 'Signal Latency', desc: 'Prioritize depth over speed in logical synthesis.' },
+            { label: 'Recursive Search', desc: 'Enable multi-pass analysis for obscure niches.' },
+            { label: 'Real-time Refresh', desc: 'Auto-refresh trend data every 60 seconds.' }
           ].map(op => (
-            <div key={op.label} className="saas-card bg-white flex flex-col gap-4 group cursor-pointer">
+            <div key={op.label} className="saas-card bg-white flex flex-col gap-4 group cursor-pointer p-6">
               <div className="flex justify-between items-center">
                 <span className="font-bold text-[#111827]">{op.label}</span>
                 <div className="w-10 h-6 bg-neutral-100 rounded-full p-1 group-hover:bg-[#111827]/10 transition-colors flex items-center justify-end">

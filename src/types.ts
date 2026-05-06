@@ -60,7 +60,7 @@ export const PROFESSIONAL_QUESTIONS: QuestionDefinition[] = [
     id: 'competitive_advantage',
     question: 'Unique Selling Point (USP)',
     placeholder: 'What makes you different?',
-    suggestions: ['First-hand expert knowledge', 'Proprietary data insights', 'Proprietary AI integration']
+    suggestions: ['First-hand expert knowledge', 'Proprietary data insights', 'Innovative systems architecture']
   },
   {
     id: 'main_challenges',
@@ -96,7 +96,7 @@ export const PROFESSIONAL_QUESTIONS: QuestionDefinition[] = [
     id: 'additional_context',
     question: 'Additional Constraints/Notes',
     placeholder: 'Any specific rules to follow?',
-    suggestions: ['Budget < $1000', 'Must include "Green" terminology', 'No AI mentions allowed']
+    suggestions: ['Budget < $1000', 'Must include "Green" terminology', 'Specific industry standards']
   }
 ];
 

@@ -48,8 +48,8 @@ export default function LandingPage({ onStart }: LandingPageProps) {
     },
     {
       icon: <Cpu size={24} />,
-      title: "Neural Logic",
-      desc: "Our engine uses multi-cluster analysis to find deep market connections."
+      title: "Protocol Logic",
+      desc: "Our engine uses multi-vector analysis to find deep structural connections."
     },
     {
       icon: <Shield size={24} />,
@@ -105,7 +105,7 @@ export default function LandingPage({ onStart }: LandingPageProps) {
             className="text-2xl md:text-3xl font-medium tracking-tight text-[#4B5563] max-w-2xl leading-tight"
           >
             A high-performance logic processor designed for those who build the future. 
-            Synthesize complexity into clarity using neural vector mapping.
+            Synthesize complexity into clarity using advanced structural mapping.
           </motion.p>
 
           <motion.button

@@ -18,7 +18,7 @@ export default function Huddles() {
   const socialPlatforms = [
     { name: 'Instagram', icon: <Instagram size={24} />, handle: '@minic_ignite' },
     { name: 'YouTube', icon: <Youtube size={24} />, handle: 'MINIC Academy' },
-    { name: 'Twitter', icon: <Twitter size={24} />, handle: '@minic_ai' },
+    { name: 'Twitter', icon: <Twitter size={24} />, handle: '@minic_labs' },
     { name: 'LinkedIn', icon: <Linkedin size={24} />, handle: 'MINIC Labs' },
   ];
 

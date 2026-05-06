@@ -43,7 +43,7 @@ export default function ProfessionalLoading() {
           ))}
         </div>
         <p className="text-[10px] font-black text-[#6B7280] uppercase tracking-[0.4em] pt-6 max-w-[200px] leading-relaxed">
-          Allocating Neural Resources For Strategy Logic
+          Allocating Logic Resources For Strategy Mapping
         </p>
       </div>
     </div>

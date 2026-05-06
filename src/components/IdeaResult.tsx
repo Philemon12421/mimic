@@ -230,8 +230,8 @@ export default function IdeaResult({ idea, onBack }: IdeaResultProps) {
             <div className="flex flex-col md:flex-row md:items-start justify-between gap-8">
               <div className="space-y-4 flex-1">
                 <div className="flex items-center gap-2 text-[#6B7280] text-[11px] font-bold tracking-[0.2em] uppercase">
-                  <Activity size={14} className="text-[#2563EB]" />
-                  Verified Intelligence Output
+                  <Activity size={14} className="text-[#111827]" />
+                  Verified Blueprint Output
                 </div>
                 <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-[#111827] leading-[1.1]">
                   {idea.title}
@@ -305,8 +305,8 @@ export default function IdeaResult({ idea, onBack }: IdeaResultProps) {
             <section className="saas-card-glow p-8 lg:p-10 space-y-10">
               <div className="space-y-6">
                 <div className="flex items-center gap-3 text-[#111827]">
-                  <Search size={20} className="text-[#2563EB]" />
-                  <h4 className="font-bold text-lg">Neural Clusters</h4>
+                  <Search size={20} className="text-[#111827]" />
+                  <h4 className="font-bold text-lg">Strategy Nodes</h4>
                 </div>
                 <div className="grid grid-cols-1 gap-3">
                   {idea.seo_keywords.map(kw => (

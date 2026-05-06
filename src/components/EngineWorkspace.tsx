@@ -17,7 +17,7 @@ import {
   Cpu
 } from 'lucide-react';
 import { UserType, USER_FLOWS, IdeaOutput } from '../types';
-import { generateIdea } from '../services/geminiService';
+import { generateBlueprint } from '../services/blueprintService';
 import { Logo } from './Logo';
 
 import ProfessionalLoading from './ProfessionalLoading';
@@ -63,12 +63,11 @@ export default function EngineWorkspace({ onGenerated }: EngineWorkspaceProps) {
   const handleGenerate = async () => {
     setIsGenerating(true);
     try {
-      const prompt = `OUTPUT ARCHITECTURE: ${outputType}\n\n` + flow.questions.map(q => `${q.question}: ${answers[q.id] || 'Not specified'}`).join('\n');
-      const result = await generateIdea(selectedType, prompt);
+      const result = await generateBlueprint(selectedType, answers, outputType);
       onGenerated(result);
     } catch (error) {
       console.error(error);
-      alert('Sensing noise in the signal. Please try again.');
+      alert('Sensing noise in the logic. Please try again.');
     } finally {
       setIsGenerating(false);
     }
@@ -89,7 +88,7 @@ export default function EngineWorkspace({ onGenerated }: EngineWorkspaceProps) {
               className="inline-flex items-center gap-2 px-3 py-1 bg-[#111827] rounded-full text-[10px] font-black uppercase tracking-[0.2em] text-white"
             >
               <Zap size={10} />
-              Professional Synthesis Engine
+              Protocol Blueprint Engine
             </motion.div>
             <h1 className="text-5xl lg:text-7xl font-bold tracking-tight text-[#111827] leading-[0.9]">
               Engine <br />
@@ -111,7 +110,7 @@ export default function EngineWorkspace({ onGenerated }: EngineWorkspaceProps) {
             </div>
             <div className="w-full max-w-[280px] space-y-2">
               <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-[#9CA3AF]">
-                <span>Neural Progress</span>
+                <span>Analysis Progress</span>
                 <span className="text-[#111827]">{Math.round(progress)}%</span>
               </div>
               <div className="h-1.5 w-full bg-[#E5E7EB] rounded-full overflow-hidden">
@@ -185,7 +184,7 @@ export default function EngineWorkspace({ onGenerated }: EngineWorkspaceProps) {
 
               <div className="pt-8 border-t border-[#E5E7EB] flex items-center justify-between gap-6">
                 <div className="text-xs text-[#6B7280] font-medium italic">
-                  * All fields are processed through our Neural Clustering Core.
+                  * All fields are processed through our Logical Clustering Core.
                 </div>
                 <div className="flex gap-4">
                   {activeCategory !== 'Context' ? (
@@ -226,11 +225,11 @@ export default function EngineWorkspace({ onGenerated }: EngineWorkspaceProps) {
                <div className="space-y-4 pt-4">
                   {[
                     { label: 'Data Density', val: `${Math.round((Object.keys(answers).length / 12) * 100)}%` },
-                    { label: 'Signal Clarity', val: 'Analyzing...' }
+                    { label: 'Logic Clarity', val: 'Analyzing...' }
                   ].map(stat => (
                     <div key={stat.label} className="flex justify-between items-center">
                       <span className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest">{stat.label}</span>
-                      <span className="text-xs font-mono text-[#2563EB] font-bold">{stat.val}</span>
+                      <span className="text-xs font-mono text-[#111827] font-bold">{stat.val}</span>
                     </div>
                   ))}
                </div>
